@@ -20,7 +20,7 @@ export const authProvider: AuthProvider = {
         localStorage.setItem('auth', response.data.token);
         return {
           success: true,
-          redirectTo: "/",
+          redirectTo: "/dashboard",
         };
       }
     }
@@ -30,10 +30,10 @@ export const authProvider: AuthProvider = {
     };
   },
   logout: async () => {
-    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem('auth');
     return {
       success: true,
-      redirectTo: "/login",
+      redirectTo: "/",
     };
   },
   check: async () => {
@@ -46,7 +46,7 @@ export const authProvider: AuthProvider = {
 
     return {
       authenticated: false,
-      redirectTo: "/login",
+      redirectTo: "/",
     };
   },
   // getPermissions: async () => null,

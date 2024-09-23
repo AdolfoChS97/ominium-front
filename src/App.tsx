@@ -1,4 +1,4 @@
-import { Refine, useApiUrl } from "@refinedev/core";
+import { Authenticated, Refine } from "@refinedev/core";
 import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
@@ -11,13 +11,20 @@ import routerBindings, {
 } from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
 import { App as AntdApp } from "antd";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 import { authProvider } from "./providers/authProvider";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { Login } from "./pages/login";
+import { Dashboard } from "./pages/dashboard";
+import { AppResources } from "./resources";
 
 function App() {
-
   const API_URL = `http://localhost:3000`;
 
   return (
@@ -28,11 +35,12 @@ function App() {
             <DevtoolsProvider>
               <Refine
                 dataProvider={{
-                  default: dataProvider(API_URL)
+                  default: dataProvider(API_URL),
                 }}
                 notificationProvider={useNotificationProvider}
                 routerProvider={routerBindings}
                 authProvider={authProvider}
+                resources={AppResources}
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
@@ -41,7 +49,16 @@ function App() {
                 }}
               >
                 <Routes>
-                  <Route index element={<Login />} />
+                  <Route path="/" element={<Login />} />
+                  <Route
+                    element={
+                      <Authenticated key={""} fallback={<Navigate to="/" />}>
+                        <Outlet />
+                      </Authenticated>
+                    }
+                  >
+                    <Route path="/dashboard" element={<Dashboard />} />
+                  </Route>
                 </Routes>
                 <RefineKbar />
                 <UnsavedChangesNotifier />
