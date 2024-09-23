@@ -1,12 +1,38 @@
-import { AuthPage } from "@refinedev/antd";
+import { FormProps } from "antd/lib";
+import { LoginForm } from "./components/form";
+import { Row, Col, notification } from "antd";
+import { LoginFormData } from "./dataTypes";
+import { useLogin } from "@refinedev/core";
+import { CheckOutlined } from "@ant-design/icons";
+
 
 export const Login = () => {
+  const { mutate: login } = useLogin<LoginFormData>();
+
+  const onFinish = (values: FormProps['onFinish']) => {    
+    const formData = values as unknown as LoginFormData;
+    login({...formData}, {
+      onSuccess: () => {
+        notification.open({
+          message: "Login successful",
+          description: "You are now logged in",
+          icon: <CheckOutlined style={{ color: "#108ee9" }} />,
+        });
+      }
+    });
+  };
+  
+  const onFinishFailed = (errorInfo: FormProps['onFinishFailed']) => {
+    console.log('Failed:', errorInfo);
+  };
+  
   return (
-    <AuthPage
-      type="login"
-      formProps={{
-        initialValues: { email: "demo@refine.dev", password: "demodemo" },
-      }}
-    />
+    <>
+      <Row style={{ height: '100vh', width: '100vw' }} align="middle" justify="center">
+        <Col>
+            <LoginForm onFinish={onFinish} onFinishFailed={onFinishFailed} />
+        </Col>
+    </Row>
+    </>
   );
 };
