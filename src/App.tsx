@@ -14,7 +14,6 @@ import { App as AntdApp } from "antd";
 import {
   BrowserRouter,
   Navigate,
-  Outlet,
   Route,
   Routes,
 } from "react-router-dom";
@@ -23,6 +22,7 @@ import { ColorModeContextProvider } from "./contexts/color-mode";
 import { Login } from "./pages/login";
 import { Dashboard } from "./pages/dashboard";
 import { AppResources } from "./resources";
+import PrivateLayout from "./components/privateLayout";
 
 function App() {
   const API_URL = `http://localhost:3000`;
@@ -53,7 +53,7 @@ function App() {
                   <Route
                     element={
                       <Authenticated key={""} fallback={<Navigate to="/" />}>
-                        <Outlet />
+                        <PrivateLayout />
                       </Authenticated>
                     }
                   >
