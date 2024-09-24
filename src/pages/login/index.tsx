@@ -11,15 +11,7 @@ export const Login = () => {
 
   const onFinish = (values: FormProps['onFinish']) => {    
     const formData = values as unknown as LoginFormData;
-    login({...formData}, {
-      onSuccess: () => {
-        notification.open({
-          message: "Login successful",
-          description: "You are now logged in",
-          icon: <CheckOutlined style={{ color: "#108ee9" }} />,
-        });
-      }
-    });
+    login({...formData}, {});
   };
   
   const onFinishFailed = (errorInfo: FormProps['onFinishFailed']) => {
