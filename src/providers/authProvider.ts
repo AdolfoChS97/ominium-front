@@ -2,7 +2,7 @@ import { type AuthProvider } from "@refinedev/core";
 import { LoginFormData } from "../pages/login/dataTypes";
 import dataProvider from "@refinedev/simple-rest";
 
-const API_URL = "http://localhost:3000";
+const API_URL = process.env?.API_URL as unknown as string;
 
 export const authProvider: AuthProvider = {
   login: async ({ user_name, password, remember }: LoginFormData) => {
@@ -21,12 +21,17 @@ export const authProvider: AuthProvider = {
         return {
           success: true,
           redirectTo: "/dashboard",
+          successNotification: {
+            message: "Login Successful",
+            description: "You have successfully logged in.",
+          }
         };
       }
     }
 
     return {
       success: false,
+      errorNotification: {}
     };
   },
   logout: async () => {
@@ -34,6 +39,10 @@ export const authProvider: AuthProvider = {
     return {
       success: true,
       redirectTo: "/",
+      successNotification: {
+        message: "Logout Successful",
+        description: "You have successfully logged out.",
+      },
     };
   },
   check: async () => {

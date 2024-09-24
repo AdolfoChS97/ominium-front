@@ -25,7 +25,7 @@ import { AppResources } from "./resources";
 import PrivateLayout from "./components/privateLayout";
 
 function App() {
-  const API_URL = `http://localhost:3000`;
+  const API_URL = process?.env?.API_URL as unknown as string;
 
   return (
     <BrowserRouter>
